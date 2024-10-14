@@ -99,7 +99,7 @@ const submission = () => {
             marginBottom: 5,
           }}
         >
-          <Text style={{ fontWeight: "bold" }}>₹{item.amount}</Text>
+          <Text style={{ fontWeight: "bold" }}>₹{item.amountForUser}</Text>
           <View style={{ flex: 1 }}></View>
           <Text style={{}}>{formatDate(item.createdAt)}</Text>
         </View>
@@ -221,7 +221,7 @@ const exportDataToExcel = async (formId: string) => {
     if (form.amountType == AmountTypeEnum.QUANTITY) {
       tempData.push(sub.quantity);
     }
-    tempData.push(sub.amount);
+    tempData.push(sub.amountForUser);
     tempData.push(formatDate(sub.updatedAt));
     data.push(tempData);
   });

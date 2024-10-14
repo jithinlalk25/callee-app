@@ -18,6 +18,11 @@ export enum AmountTypeEnum {
   QUANTITY = "QUANTITY",
 }
 
+enum FeeCollectedFromEnum {
+  PAYER = "PAYER",
+  PAYEE = "PAYEE",
+}
+
 export enum FormStatusEnum {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
@@ -25,18 +30,22 @@ export enum FormStatusEnum {
 
 const save = async (
   title: string,
+  description: string,
   amountType: AmountTypeEnum,
   amount: string,
   quantityFieldName: string,
   fields: any[],
   id: string,
   isActive: boolean,
-  expiry: string
+  expiry: string,
+  feeCollectedFrom: FeeCollectedFromEnum
 ) => {
   const data: any = {
     title,
+    description,
     amountType,
     fields,
+    feeCollectedFrom,
   };
   if ([AmountTypeEnum.FIXED, AmountTypeEnum.QUANTITY].includes(amountType)) {
     data["amount"] = Number(amount);
@@ -69,11 +78,15 @@ const form = () => {
   const [quantityFieldNameError, setQuantityFieldNameError] = useState("");
   const [fields, setFields] = useState<any>([]);
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [titleError, setTitleError] = useState("");
   const [expiryCheckbox, setExpiryCheckbox] = useState(false);
   const [expiry, setExpiry] = useState("");
   const [expiryError, setExpiryError] = useState("");
   const [isActive, setIsActive] = useState(true);
+  const [feeCollectedFrom, setFeeCollectedFrom] = useState(
+    FeeCollectedFromEnum.PAYER
+  );
 
   const init = async () => {
     let screenTitle = "";
@@ -87,6 +100,7 @@ const form = () => {
       });
 
       setTitle(response.data.title);
+      setDescription(response.data.description);
       setAmountType(response.data.amountType);
       if (
         [AmountTypeEnum.FIXED, AmountTypeEnum.QUANTITY].includes(
@@ -169,6 +183,18 @@ const form = () => {
           Min ₹10 - Max ₹10000
         </Text> */}
         </View>
+        <TextInput
+          style={{ marginTop: 10 }}
+          outlineStyle={{ borderRadius: 10 }}
+          mode="outlined"
+          label="Description"
+          value={description}
+          multiline={true}
+          numberOfLines={3}
+          onChangeText={(text) => {
+            setDescription(text);
+          }}
+        />
         <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10 }}>
           Amount Type
         </Text>
@@ -246,6 +272,35 @@ const form = () => {
         </Text> */}
           </View>
         )}
+
+        <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 15 }}>
+          Platform fee collected from
+        </Text>
+        <RadioButton.Group
+          onValueChange={(data: any) => {
+            setFeeCollectedFrom(data);
+          }}
+          value={feeCollectedFrom}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <RadioButton.Item
+              label="Payer"
+              value={FeeCollectedFromEnum.PAYER}
+            />
+            <RadioButton.Item
+              label="Payee"
+              value={FeeCollectedFromEnum.PAYEE}
+            />
+          </View>
+        </RadioButton.Group>
+
+        <View>
+          <Text style={{ backgroundColor: "lightgray", padding: 5 }}>
+            {feeCollectedFrom == FeeCollectedFromEnum.PAYER
+              ? `Example: Amount = ₹100, Platform Fee = 3%\nPayer will pay ₹103 and Payee will get ₹100`
+              : `Example: Amount = ₹100, Platform Fee = 3%\nPayer will pay ₹100 and Payee will get ₹97`}
+          </Text>
+        </View>
 
         <View style={{ flexDirection: "row", marginTop: 15 }}>
           <Checkbox.Android
@@ -358,6 +413,8 @@ const form = () => {
               return;
             }
 
+            const _description = description.trim();
+
             const _amount = amount.trim();
             if (!Number.isInteger(Number(_amount))) {
               setAmountError("Invalid amount");
@@ -417,13 +474,15 @@ const form = () => {
 
             save(
               _title,
+              _description,
               amountType,
               _amount,
               quantityFieldName,
               fields,
               id,
               isActive,
-              _expiry
+              _expiry,
+              feeCollectedFrom
             );
           }}
         >
