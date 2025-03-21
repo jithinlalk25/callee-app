@@ -63,20 +63,20 @@ const submission = () => {
   useEffect(() => {
     navigation.setOptions({
       title: "Submissions",
-      headerRight: () => (
-        <Button
-          style={{
-            width: "auto",
-          }}
-          mode="text"
-          icon="export"
-          onPress={() => {
-            exportDataToExcel(formId);
-          }}
-        >
-          Export
-        </Button>
-      ),
+      // headerRight: () => (
+      //   <Button
+      //     style={{
+      //       width: "auto",
+      //     }}
+      //     mode="text"
+      //     icon="export"
+      //     onPress={() => {
+      //       exportDataToExcel(formId);
+      //     }}
+      //   >
+      //     Export
+      //   </Button>
+      // ),
     });
 
     init();

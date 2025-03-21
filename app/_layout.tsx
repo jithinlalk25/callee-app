@@ -11,12 +11,14 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import useStore from "../utils/useStore";
 import { getSecureStoreData } from "../utils/secureStore";
 import { router, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 const _layout = () => {
   const { loading, snackbarText, setSnackbarText } = useStore();
 
   return (
     <PaperProvider theme={DefaultTheme}>
+      <StatusBar style="auto" />
       <SafeAreaProvider>
         <Stack screenOptions={{ headerShown: false }} />
         {loading && (

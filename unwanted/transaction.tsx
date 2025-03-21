@@ -10,21 +10,29 @@ enum FilterEnum {
   DEBIT = "DEBIT",
 }
 
-const TransactionTypeMap: any = {
-  CREDIT: "Credit",
-  DEBIT: "Debit",
+const TransactionStatusMap: any = {
+  created: { value: "Pending", color: "blue" },
+  authorized: { value: "Pending", color: "blue" },
+  captured: { value: "Success", color: "green" },
+  refunded: { value: "Refunded", color: "yellow" },
+  failed: { value: "Failed", color: "red" },
 };
 
-const formatDate = (date: string) => {
-  const dateObj = new Date(date);
-  const readableDate = dateObj.toLocaleDateString("en-US", {
+const formatDate = (timestamp: number) => {
+  // Convert the Unix timestamp to milliseconds
+  const dateObj = new Date(timestamp * 1000);
+
+  const istDateObj = new Date(dateObj.getTime());
+
+  // Format the date
+  const readableDate = istDateObj.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short", // Short form of the month
     day: "numeric",
   });
 
   // Format the time
-  const readableTime = dateObj.toLocaleTimeString("en-US", {
+  const readableTime = istDateObj.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
@@ -97,11 +105,11 @@ const transaction = () => {
       >
         <Text style={{ fontWeight: "bold" }}>₹{item.amount}</Text>
         <View style={{ flex: 1 }}></View>
-        <Text style={{ color: item.type == "CREDIT" ? "green" : "darkred" }}>
-          {TransactionTypeMap[item.type]}
+        <Text style={{ color: TransactionStatusMap[item.status].color }}>
+          {TransactionStatusMap[item.status].value}
         </Text>
         <View style={{ flex: 1 }}></View>
-        <Text style={{}}>{formatDate(item.createdAt)}</Text>
+        <Text style={{}}>{formatDate(item.created_at)}</Text>
       </View>
     );
   };
@@ -161,13 +169,13 @@ const transaction = () => {
 
   return (
     <View style={{ marginTop: 20, paddingBottom: 60 }}>
-      <HeaderComponent />
+      {/* <HeaderComponent /> */}
       <FlatList
         // ListHeaderComponent={HeaderComponent}
         style={{ paddingLeft: 20, paddingRight: 20 }}
         data={transactions}
         renderItem={renderItem}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item.id}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
         onMomentumScrollBegin={() => {

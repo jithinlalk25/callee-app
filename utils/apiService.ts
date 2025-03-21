@@ -26,6 +26,8 @@ export const get = async (
     console.error(error);
     if (error.response.status == 401) {
       clearStore();
+    } else if (error.response?.data?.showMessage) {
+      setSnackbarText(error.response?.data?.message);
     } else {
       setSnackbarText("Something went wrong!");
     }
@@ -65,6 +67,8 @@ export const post = async (
     console.error(error);
     if (error.response.status == 401) {
       clearStore();
+    } else if (error.response?.data?.showMessage) {
+      setSnackbarText(error.response?.data?.message);
     } else {
       setSnackbarText("Something went wrong!");
     }

@@ -29,8 +29,9 @@ export default {
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
+    newArchEnabled: true,
     splash: {
-      image: "./assets/splash.png",
+      image: "./assets/splash-icon.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff",
     },
@@ -48,11 +49,10 @@ export default {
         backgroundColor: "#ffffff",
       },
       package: getUniqueIdentifier(),
-      versionCode: "1",
       googleServicesFile: "./google-services.json",
     },
     web: {
-      favicon: "./assets/favicon.png",
+      // favicon: "./assets/favicon.png",
     },
     plugins: ["expo-router", "expo-secure-store"],
     extra: {

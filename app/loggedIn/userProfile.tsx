@@ -13,7 +13,7 @@ const userProfile = () => {
   const logout = async () => {
     await post("auth/logout");
     clearStore();
-    router.replace("/login");
+    router.replace("/");
   };
 
   const getUser = async () => {
@@ -49,9 +49,21 @@ const userProfile = () => {
             {data && (
               <View>
                 <Text style={{ fontSize: 20 }}>
+                  Name:{" "}
+                  <Text style={{ color: "darkblue", fontWeight: "bold" }}>
+                    {data.name}
+                  </Text>
+                </Text>
+                <Text style={{ fontSize: 20 }}>
                   Phone Number:{" "}
                   <Text style={{ color: "darkblue", fontWeight: "bold" }}>
                     {data.phoneNumber}
+                  </Text>
+                </Text>
+                <Text style={{ fontSize: 20 }}>
+                  Email:{" "}
+                  <Text style={{ color: "darkblue", fontWeight: "bold" }}>
+                    {data.email}
                   </Text>
                 </Text>
               </View>
@@ -118,10 +130,23 @@ const userProfile = () => {
               fontWeight: "bold",
               fontSize: 20,
             }}
-            onPress={() => Linking.openURL("mailto:calleeteam@gmail.com")}
+            onPress={() => Linking.openURL("mailto:support@callee.app")}
           >
-            calleeteam@gmail.com
+            support@callee.app
           </Text>
+          <Text
+            style={{
+              marginTop: 5,
+              color: "blue",
+              alignSelf: "center",
+              fontWeight: "bold",
+              fontSize: 20,
+            }}
+            onPress={() => Linking.openURL("tel:+917356245819")}
+          >
+            +91-7356245819
+          </Text>
+
           <Text
             style={{
               color: "gray",
@@ -136,7 +161,7 @@ const userProfile = () => {
                 alignSelf: "center",
               }}
               onPress={() =>
-                Linking.openURL("https://callee.app/terms-and-conditions")
+                Linking.openURL("https://www.callee.app/terms-conditions")
               }
             >
               Terms & Conditions
@@ -149,7 +174,7 @@ const userProfile = () => {
                 alignSelf: "center",
               }}
               onPress={() =>
-                Linking.openURL("https://callee.app/privacy-policy")
+                Linking.openURL("https://www.callee.app/privacy-policy")
               }
             >
               Privacy Policy
@@ -173,13 +198,11 @@ const userProfile = () => {
 const shareApp = async () => {
   try {
     const result = await Share.share({
-      message: `Callee
+      message: `Callee - Payable Form Simplified
 
-A platform designed to simplify the collection of payments
+Callee is a simple and innovative platform that lets you create payable forms to collect money effortlessly
 
-📱 Android - https://play.google.com/store/apps/details?id=com.androjlk.callee
-
-📱 IOS - https://apps.apple.com/in/app/rate-india/id6504734648`,
+📱 Android - https://play.google.com/store/apps/details?id=com.androjlk.callee`,
     });
 
     if (result.action === Share.sharedAction) {

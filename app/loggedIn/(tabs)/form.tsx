@@ -13,6 +13,7 @@ import { get, post } from "../../../utils/apiService";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
+import { Constant } from "../../../utils/constants";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -119,6 +120,22 @@ const form = () => {
     }, [])
   );
 
+  const createForm = async () => {
+    const response: any = await get("payment/getAccount");
+    if (response.data.address && response.data.bankAccount) {
+      router.navigate(`/loggedIn/form/null`);
+    } else {
+      Alert.alert("Note", "Add your bank account to create form", [
+        {
+          text: "Okay",
+          onPress: () => {
+            router.navigate(`/loggedIn/account`);
+          },
+        },
+      ]);
+    }
+  };
+
   return (
     forms && (
       <ScrollView style={{ flexGrow: 1 }}>
@@ -132,7 +149,7 @@ const form = () => {
               <Button
                 style={{ width: "auto", alignSelf: "center" }}
                 mode="contained"
-                onPress={() => router.navigate(`/loggedIn/form/null`)}
+                onPress={createForm}
               >
                 Create Form
               </Button>
@@ -141,7 +158,7 @@ const form = () => {
             <Button
               style={{ width: "auto", alignSelf: "center" }}
               mode="contained"
-              onPress={() => router.navigate(`/loggedIn/form/null`)}
+              onPress={createForm}
             >
               Create Form
             </Button>
@@ -164,10 +181,10 @@ const form = () => {
                         fontSize: 18,
                       }}
                       onPress={() =>
-                        Linking.openURL(`https://callee.app/${form.urlPath}`)
+                        Linking.openURL(`${Constant.FORM_URL}${form.urlPath}`)
                       }
                     >
-                      callee.app/{form.urlPath}
+                      form.callee.app/{form.urlPath}
                     </Text>
                     <Button
                       mode="text"
@@ -175,7 +192,7 @@ const form = () => {
                       onPress={() => {
                         sharePaymentLink(
                           form.title,
-                          `https://callee.app/${form.urlPath}`
+                          `${Constant.FORM_URL}${form.urlPath}`
                         );
                       }}
                     >

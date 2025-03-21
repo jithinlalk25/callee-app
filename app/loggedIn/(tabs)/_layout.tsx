@@ -16,7 +16,7 @@ const _layout = () => {
         }}
       />
 
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="transaction"
         options={{
           title: "Transactions",
@@ -25,14 +25,14 @@ const _layout = () => {
             <FontAwesome size={20} name="th-list" color={color} />
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
-        name="wallet"
+        name="account"
         options={{
-          title: "Wallet",
+          title: "Account",
 
           tabBarIcon: ({ color }) => (
-            <FontAwesome size={20} name="money" color={color} />
+            <FontAwesome size={20} name="bank" color={color} />
           ),
         }}
       />
